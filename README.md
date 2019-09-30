@@ -19,6 +19,22 @@ This will retrieve the library.
 
 ## Usage
 
+```
+telnet 127.0.0.1 11212
+set some_userid-blockid 0 0 1
+1
+STORED
+get some_userid-blockid
+VALUE some_userid-blockid 0 1
+1
+END
+get miss
+VALUE miss 0 1
+0
+END
+close
+Connection closed by foreign host.
+```
 
 
 ## Contact
