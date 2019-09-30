@@ -15,7 +15,8 @@ type kuku struct {
 	cf *cuckoo.Filter
 }
 
-func NewKuku() mcproto.McEngine {
+// newKuku - init filter
+func newKuku() mcproto.McEngine {
 	eng := &kuku{}
 	eng.Lock()
 	defer eng.Unlock()

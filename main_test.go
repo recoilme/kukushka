@@ -7,7 +7,7 @@ import (
 
 func Test_Store(t *testing.T) {
 
-	db := NewKuku()
+	db := newKuku()
 	db.Set([]byte("1"), nil, 0, 0, 1, false, nil)
 	val, _, _ := db.Get([]byte("1"), nil)
 	if string(val) != "1" {
@@ -21,7 +21,7 @@ func Test_Store(t *testing.T) {
 }
 
 func Test_Size(t *testing.T) {
-	db := NewKuku()
+	db := newKuku()
 	for i := 0; i < 1_000_000; i++ {
 		b := make([]byte, 8)
 		binary.BigEndian.PutUint64(b, uint64(i))
