@@ -2,6 +2,8 @@ package main
 
 import (
 	"bufio"
+	"bytes"
+	"fmt"
 	"sync"
 
 	"github.com/recoilme/mcproto"
@@ -17,13 +19,20 @@ func NewKuku() mcproto.McEngine {
 	eng := &kuku{}
 	eng.Lock()
 	defer eng.Unlock()
-	eng.cf = cuckoo.NewFilter(1000)
+	eng.cf = cuckoo.NewFilter(10_000_000)
 	return eng
 }
 
 func (en *kuku) Get(key []byte, rw *bufio.ReadWriter) (value []byte, noreply bool, err error) {
 	en.RLock()
 	defer en.RUnlock()
+
+	if bytes.HasPrefix(key, []byte("count")) {
+		return []byte(fmt.Sprintf("%d", en.cf.Count())), false, nil
+	}
+	if bytes.HasPrefix(key, []byte("len")) {
+		return []byte(fmt.Sprintf("%d", len(en.cf.Encode()))), false, nil
+	}
 	val := "0"
 	if en.cf.Lookup(key) {
 		val = "1"

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/binary"
 	"testing"
 )
 
@@ -17,4 +18,24 @@ func Test_Store(t *testing.T) {
 		t.Errorf("Expected 0, got:%s", valmis)
 	}
 
+}
+
+func Test_Size(t *testing.T) {
+	db := NewKuku()
+	for i := 0; i < 1_000_000; i++ {
+		b := make([]byte, 8)
+		binary.BigEndian.PutUint64(b, uint64(i))
+		_, err := db.Set(b, nil, 0, 0, 0, false, nil)
+		if err != nil {
+			panic("bad news")
+		}
+	}
+	cnt, _, err := db.Get([]byte("count"), nil)
+	if err != nil {
+		panic("bad news")
+	}
+	println(string(cnt))
+
+	len, _, err := db.Get([]byte("len"), nil)
+	println(string(len) + " byte")
 }
