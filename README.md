@@ -19,7 +19,7 @@ This will retrieve the library.
 
 ## How it work
 
-`Kukushka` implement SET,GET,GETS and CLOSE memecashed command
+`Kukushka` implement SET,GET,GETS and CLOSE memcache comand
 
 Value - ignored. Then you send SET yourkey - kukushka will add this key at cuckoo filter
 
