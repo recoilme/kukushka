@@ -20,7 +20,7 @@ func newKuku() mcproto.McEngine {
 	eng := &kuku{}
 	eng.Lock()
 	defer eng.Unlock()
-	eng.cf = cuckoo.NewFilter(10_000_000)
+	eng.cf = cuckoo.NewFilter(100_000_000)
 	return eng
 }
 

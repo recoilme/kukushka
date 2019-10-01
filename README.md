@@ -36,12 +36,19 @@ close
 Connection closed by foreign host.
 ```
 
-## map vs cuckoo
+## map vs cuckoo vs bloom
 
 ```
+1_000_000
 map[uint64]uint8 memory usage:  Alloc = 60 MiB 
 map[uint64]uint64 memory usage: Alloc = 76 MiB
 cuckoo memory usage:            Alloc = 39 MiB
+bloom memory usage:             Alloc = 31 MiB
+
+100_000_000
+map[uint64]uint64 - 4174 MiB   4.648s
+bloom -   Alloc = 237 MiB  43.037s
+cuckoo - Alloc = 289 MiB  29.405s
 
 ```
 

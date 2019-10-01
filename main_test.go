@@ -5,12 +5,8 @@ import (
 	"fmt"
 	"runtime"
 	"testing"
-	"time"
-
-	"github.com/cespare/xxhash"
 )
 
-/*
 func Test_Store(t *testing.T) {
 
 	db := newKuku()
@@ -24,12 +20,13 @@ func Test_Store(t *testing.T) {
 		t.Errorf("Expected 0, got:%s", valmis)
 	}
 
-}*/
+}
 
+/*
 func Test_Map(t *testing.T) {
 	println("map memory usage")
 	m := make(map[uint64]uint64)
-	for i := 0; i < 1_000_000; i++ {
+	for i := 0; i < 100_000_000; i++ {
 		b := make([]byte, 8)
 		binary.BigEndian.PutUint64(b, uint64(i))
 		h := xxhash.Sum64(b)
@@ -38,7 +35,7 @@ func Test_Map(t *testing.T) {
 
 	println(len(m))
 	PrintMemUsage()
-	for j := 0; j < 1_000_000; j++ {
+	for j := 0; j < 100_000_000; j++ {
 		b := make([]byte, 8)
 		binary.BigEndian.PutUint64(b, uint64(j))
 		h := xxhash.Sum64(b)
@@ -49,9 +46,8 @@ func Test_Map(t *testing.T) {
 	}
 	runtime.GC()
 	time.Sleep(time.Second)
-}
+}*/
 
-/*
 func Test_Size(t *testing.T) {
 	db := newKuku()
 	for i := 0; i < 1_000_000; i++ {
@@ -72,8 +68,23 @@ func Test_Size(t *testing.T) {
 
 	len, _, err := db.Get([]byte("len"), nil)
 	println(string(len) + " byte")
+
+	falsePos := 0
+	for i := 1_000_000; i < 2_000_000; i++ {
+		b := make([]byte, 8)
+		binary.BigEndian.PutUint64(b, uint64(i))
+		val, _, err := db.Get(b, nil)
+		if err != nil {
+			panic("bad news")
+		}
+		if string(val) == "1" {
+			falsePos++
+
+		}
+	}
+	println(falsePos)
 }
-*/
+
 func PrintMemUsage() {
 	var m runtime.MemStats
 	runtime.ReadMemStats(&m)
@@ -87,3 +98,20 @@ func PrintMemUsage() {
 func bToMb(b uint64) uint64 {
 	return b / 1024 / 1024
 }
+
+/*
+func Test_Bloom(t *testing.T) {
+	println("bloom memory usage")
+	n := uint(100_000_000)
+	filter := bloom.New(n, 5) // load of 20, 5 keys
+
+	//	m := make(map[uint64]uint64)
+	for i := 0; i < 100_000_000; i++ {
+		b := make([]byte, 8)
+		binary.BigEndian.PutUint64(b, uint64(i))
+		//h := xxhash.Sum64(b)
+		//	m[h] = 1
+		filter.Add(b)
+	}
+	PrintMemUsage()
+}*/
