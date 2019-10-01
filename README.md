@@ -36,6 +36,14 @@ close
 Connection closed by foreign host.
 ```
 
+## map vs cuckoo
+
+```
+map[uint64]uint8 memory usage:  Alloc = 60 MiB 
+map[uint64]uint64 memory usage: Alloc = 76 MiB
+cuckoo memory usage:            Alloc = 39 MiB
+
+```
 
 ## Contact
 
