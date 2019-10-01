@@ -17,7 +17,17 @@ $ go get -u github.com/recoilme/kukushka
 
 This will retrieve the library.
 
-## Usage
+## How it work
+
+`Kukushka` implement SET,GET,GETS and CLOSE memecashed command
+
+Value - ignored. Then you send SET yourkey - kukushka will add this key at cuckoo filter
+
+If value in filter - GET return string "1". If not - "0".
+
+Server started at 11212 on localhost (hardcoded)
+
+## Usage (telnet example)
 
 ```
 telnet 127.0.0.1 11212
@@ -40,8 +50,8 @@ Connection closed by foreign host.
 
 ```
 1_000_000
-map[uint64]uint8 memory usage:  Alloc = 60 MiB 
 map[uint64]uint64 memory usage: Alloc = 76 MiB
+map[uint64]uint8 memory usage:  Alloc = 60 MiB 
 cuckoo memory usage:            Alloc = 39 MiB
 bloom memory usage:             Alloc = 31 MiB
 

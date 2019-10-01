@@ -41,8 +41,28 @@ func (en *kuku) Get(key []byte, rw *bufio.ReadWriter) (value []byte, noreply boo
 	return []byte(val), false, nil
 }
 func (en *kuku) Gets(keys [][]byte, rw *bufio.ReadWriter) (err error) {
-	return
+	var wg sync.WaitGroup
+	read := func(key []byte) {
+		defer wg.Done()
+		val := "0"
+		if en.cf.Lookup(key) {
+			val = "1"
+		}
+		fmt.Fprintf(rw, "VALUE %s 0 %d\r\n%s\r\n", key, len(val), val)
+
+	}
+	wg.Add(len(keys))
+	for _, key := range keys {
+		go read(key)
+	}
+	wg.Wait()
+	_, err = rw.Write([]byte("END\r\n"))
+	if err == nil {
+		err = rw.Flush()
+	}
+	return err
 }
+
 func (en *kuku) Set(key, value []byte, flags uint32, exp int32, size int, noreply bool, rw *bufio.ReadWriter) (noreplyresp bool, err error) {
 	en.Lock()
 	defer en.Unlock()
